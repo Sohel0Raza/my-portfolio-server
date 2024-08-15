@@ -1,19 +1,18 @@
 import mongoose from "mongoose";
 import projectSchema from "../schemas/project.schema.js";
 import featureSchema from "../schemas/feature.schemas.js";
+import { technologySchema } from "../schemas/technology.schema.js";
 
 const projectModel = mongoose.model("Project", projectSchema);
 
 const featureModel = mongoose.model("Feature", featureSchema);
+const technologyModel = mongoose.model("Technology", technologySchema);
 
 export const getProject = async (req, res) => {
   try {
-    //const projects = await projectModel.find()
-    //const projects  =  await featureModel.find().populate({ path: 'features', select: 'name' });
-
     const projects = await projectModel
-      .findOne({ _id: "66bcefb469540531ba202496" })
-      .populate({ path: "features", select: "name" });
+      .find()
+      .populate([{ path: "features" }, { path: "technologies" }]);
 
     res.status(200).send(projects);
   } catch (error) {
