@@ -22,18 +22,27 @@ export const getProject = async (req, res) => {
   }
 };
 
-const createProject = async (req, res) => {
+export const createProject = async (req, res) => {
   try {
     const newProject = req.body;
+
+    const savedFeatures = await featureModel.insertMany(newProject.features);
+    const savedFeatureIds = savedFeatures.map((feature) => feature._id);
+
+    const savedTechnologies = await technologyModel.insertMany(newProject.technologies);
+    const savedTechnologyIds = savedTechnologies.map(technology => technology._id);
+
     const projectDoc = new projectModel({
       name: newProject.name,
-      description: newProject.description,
       liveLink: newProject.liveLink,
       serverLink: newProject.serverLink,
       clientLink: newProject.clientLink,
-      technologies: newProject.technologies,
+      features: savedFeatureIds,
+      technologies: savedTechnologyIds,
     });
+
     const project = await projectDoc.save();
+
     res.status(200).send(project);
   } catch (error) {
     res.status(500).send({
