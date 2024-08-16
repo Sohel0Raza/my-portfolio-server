@@ -22,6 +22,7 @@ export const createSkill = async (req, res) => {
     const skillDoc = new skillModel({
       name: newSkill.name,
       image: newSkill.image,
+      techTecnology:newSkill.techTecnology,
       skillLevel: newSkill.skillLevel,
     });
 
