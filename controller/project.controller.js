@@ -29,16 +29,23 @@ export const createProject = async (req, res) => {
     const savedFeatures = await featureModel.insertMany(newProject.features);
     const savedFeatureIds = savedFeatures.map((feature) => feature._id);
 
-    const savedTechnologies = await technologyModel.insertMany(newProject.technologies);
-    const savedTechnologyIds = savedTechnologies.map(technology => technology._id);
+    const savedTechnologies = await technologyModel.insertMany(
+      newProject.technologies
+    );
+    const savedTechnologyIds = savedTechnologies.map(
+      (technology) => technology._id
+    );
 
     const projectDoc = new projectModel({
       name: newProject.name,
+      title: newProject.title,
+      image: newProject.image,
       liveLink: newProject.liveLink,
       serverLink: newProject.serverLink,
       clientLink: newProject.clientLink,
       features: savedFeatureIds,
       technologies: savedTechnologyIds,
+      categoryId: newProject.categoryId,
     });
 
     const project = await projectDoc.save();
